@@ -50,7 +50,9 @@ Note: The setup was developed and tested on a Linux machine. Backups can be done
    pip3 install -r requirements.txt 
    ```
    
-   1.3. Configure the AWS credentials. 
+   1.3. If needed, configure the AWS credentials. 
+
+   This might be done, for example, using `aws configure`
 
    You might use a root user or any other user that have rights to create S3 bucket, create an IAM user and create IAM policy.
 
