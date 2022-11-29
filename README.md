@@ -25,7 +25,10 @@ My criteria are:
   - In case we are backing a Windows machine: support VSS, AKA "Shadow". This allow backup of open-files.
   - Support "Object Locking". Correctly implemented, this is a powerful anti-ransom-ware feature
   - Runs on Windows 
-My choice was "arqbackup". Before you choose your backup software, I suggest that you look at-least at the open-source and free restic and Duplicati. 
+
+My choice was "arqbackup", which is reasonably prices and meet all requirements above.
+
+Before you choose your backup software, I suggest that you look at-least at the open-source and free `restic` and `Duplicati` packages. Both are available on all major operating systems. However, both do not support the "Object Lock" feather, which was important for me. In the "Useful Links" section below, there are pointers to backup software reviews.
 
 ## Installation
 
@@ -75,9 +78,9 @@ Note: The setup was developed and tested on a Linux machine. Backups can be done
   -[AWS Glacier Pricing Explained](https://www.arqbackup.com/aws-glacier-pricing.html)
   - [CDK cfnBucket usage example](https://github.com/amotz/object-locked-s3-cdk-sample/blob/master/lib/object-locked-s3-cdk-sample-stack.ts)
   - [Another CDK cfnBucket usage example](https://github.com/aws-samples/aws-cdk-examples/blob/9c88ce300037bd0fbc25b900cae8f28a2863046f/typescript/s3-kms-cross-account-replication/stacks/step3-source-account.ts)
-  - [S3 policy recomended by Arq Backup](https://www.arqbackup.com/documentation/arq7/English.lproj/createAWSKeyPair.html)
+  - [S3 policy recommended by Arq Backup](https://www.arqbackup.com/documentation/arq7/English.lproj/createAWSKeyPair.html)
   - [Object-locked s3 CDK sample](https://github.com/amotz/object-locked-s3-cdk-sample/blob/master/lib/object-locked-s3-cdk-sample-stack.ts)
-  - [How to define encription for cfnBucket](https://github.com/aws/aws-cdk/issues/4902)
+  - [How to define encryption for cfnBucket](https://github.com/aws/aws-cdk/issues/4902)
 
 ## Author
 
