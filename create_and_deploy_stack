@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+import stack_info
+import os, time
+
+backup_name = ''
+valid = False
+while not valid:
+    backup_name = input("Enter name for the stack, for example 'mike-home' > ").lower()
+    if backup_name.replace("-","").isalnum():
+        valid = True
+    else:
+        print("The supplied name is not valid. It might contain letters, digits and '-' only")
+
+stack_name = backup_name +"-backup-stack"
+print("The name of the stack will be:", stack_name)
+print()
+use_localstack = False
+
+# Check if the stack we are about to create already exists
+si = stack_info.StackInfo(use_localstack)
+num_stacks = si.get_num_stacks()
+if si.connection_success_msg:
+    print(si.connection_success_msg)
+    print("Aborting")
+    exit()
+print("Before we start the creation of a new stack, there are",num_stacks, "stack(s).")
+status = si.get_stack_status(stack_name)
+if status!=None:
+    print("Stack '"+stack_name+"' pre-exists - Aborting")
+    print("   If you use the 'real' AWS: Delete the existing stack")
+    print("   WARNING: this actions might erase all your data.")
+    exit()
+
+os.system("rm -f cdk_template/template_as_generated_by_cdk.yaml")
+print("Generating CloudFormatioon template JSON using CDK")
+cmd = f'export BACKUP_NAME={backup_name}; cd cdk_template; cdk synth >template_as_generated_by_cdk.yaml'
+ans = os.popen(cmd).read()
+template_file_size = os.path.getsize('cdk_template/template_as_generated_by_cdk.yaml')
+if template_file_size<100:
+    print("CDK did not genrete template file - Aborting")
+    exit()
+
+print("Stripping the CloudFormation template of CDK metadata")
+cmd = "./clean_template"
+ans = os.popen(cmd).read()
+print(ans)
+
+print("Deploying the AWS resources defined in the template, using CloudFormation")
+cmd  = 'aws cloudformation create-stack '
+cmd += '--stack-name '+ stack_name
+cmd += '  --template-body file://template.yaml --capabilities CAPABILITY_IAM'
+ans = os.popen(cmd).read()
+print("Answer to 'create stack' command:")
+print(ans)
+
+print("\nStack status:")
+stack_status = si.get_stack_status(stack_name) 
+print("   ", stack_status)
+
+while stack_status=='CREATE_IN_PROGRESS':
+    print("    Waiting for stack creation to complete")   # Need add time out
+    time.sleep(1)
+    stack_status = si.get_stack_status(stack_name) 
+
+print("\nStack final status:")
+print("   ", stack_status)
+
+if stack_status=="CREATE_FAILED":
+    print("Aborting, because stack creation has failed")
+    exit()
+
+os.system("rm -f ../set_stack_env_vars")
+print("\nStack outputs:")
+outputs = si.get_stack_outputs(stack_name)
+if outputs:
+    for output in outputs:
+        key =  output['OutputKey']; val = output['OutputValue'] 
+        print("   ", key, val)
