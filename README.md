@@ -8,7 +8,7 @@ It is probably not worth your efforts to use this repository for the backup of a
 
 My original motivation was to properly back my sister's laptop.
 Any cloud backup will guard your data against disk/SSD failures, or other things that makes your PC unavailable.
-The more challenging scenario is ransom-ware. This is because the ransom-ware will attempt to harm the backups, as well as the original data.
+The more challenging scenario is ransomware. This is because the ransom-ware will attempt to harm the backups, as well as the original data.
 So, I looked for a solution that will address malware. The well known solution is to use "Object locking", which means that the backup software will ask the cloud to disable write or delete of the backup files for a specified amount of months.
 
 The main component of this project is a CDK Python script that deploys the following items:
@@ -26,9 +26,9 @@ My criteria are:
   - Support "Object Locking". Correctly implemented, this is a powerful anti-ransom-ware feature
   - Runs on Windows 
 
-My choice was "arqbackup", which is reasonably prices and meet all requirements above.
+My choice was "arqbackup", which is reasonably priced and meets all of the requirements above.
 
-Before you choose your backup software, I suggest that you look at-least at the open-source and free `restic` and `Duplicati` packages. Both are available on all major operating systems. However, both do not support the "Object Lock" feather, which was important for me. In the "Useful Links" section below, there are pointers to backup software reviews.
+Before you choose your backup software, have a look at the open-source and free `restic` and `Duplicati` packages. Both run on all the main operating systems. However, both do not support the "Object Lock" feature, which was important for me. In the "Useful Links" section below, there are pointers to backup software reviews.
 
 ## Installation
 
